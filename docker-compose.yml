@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.26.0
+    container_name: prometheus
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+      - ./config/init_prometheus.sh:/etc/prometheus/init_prometheus.sh
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    ports:
+      - '9090:9090'
+
+  grafana:
+    image: grafana/grafana:8.1.2
+    container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./dashboards:/etc/grafana/provisioning/dashboards
+      - ./config/grafana_datasource.yml:/etc/grafana/provisioning/datasources/datasources.yml
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - '3000:3000'
+
+  blackbox_exporter:
+    image: prom/blackbox-exporter:v0.18.0
+    cap_add:
+      - CAP_NET_RAW
+    user: root
+    container_name: blackbox_exporter
+    volumes:
+      - ./config/blackbox.yml:/config/blackbox.yml
+    command:
+      - '--config.file=/config/blackbox.yml'
+    ports:
+      - '9115:9115'
+    network_mode: host
+
+  speedtest_exporter:
+    image: billimek/prometheus-speedtest-exporter:latest
+    container_name: speedtest_exporter
+    ports:
+      - '9469:9469'
+    environment:
+      - server_ids=3855,1782,2225
+    restart: always
+
+volumes:
+  prometheus_data:
+  grafana_data:
