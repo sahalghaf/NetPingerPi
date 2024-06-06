@@ -48,7 +48,7 @@
         "type": "gauge",
         "targets": [
           {
-            "expr": "rate(speedtest_download_bits_per_second[5m])",
+            "expr": "rate(speedtest_download_bytes[5m]) * 8",
             "interval": "",
             "legendFormat": "Download",
             "refId": "A"
@@ -85,7 +85,7 @@
         "type": "gauge",
         "targets": [
           {
-            "expr": "rate(speedtest_upload_bits_per_second[5m])",
+            "expr": "rate(speedtest_upload_bytes[5m]) * 8",
             "interval": "",
             "legendFormat": "Upload",
             "refId": "B"

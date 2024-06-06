@@ -40,7 +40,6 @@ services:
       - '--config.file=/config/blackbox.yml'
     ports:
       - '9115:9115'
-    network_mode: host
 
   speedtest_exporter:
     image: billimek/prometheus-speedtest-exporter:latest

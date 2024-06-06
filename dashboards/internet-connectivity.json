@@ -78,13 +78,6 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "probe_duration_seconds{instance=\"8.8.8.8\"}",
-            "format": "time_series",
-            "intervalFactor": 2,
-            "legendFormat": "Ping Duration",
-            "refId": "A"
-          },
-          {
             "expr": "probe_success{instance=\"8.8.8.8\"}",
             "format": "time_series",
             "intervalFactor": 2,
